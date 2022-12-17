@@ -1,3 +1,5 @@
+import { ButtonHTMLAttributes, DetailedHTMLProps, HTMLAttributes } from 'react';
+
 export type ApiResponseMeta = {
   page: number;
   per_page: number;
@@ -19,4 +21,23 @@ export type User = {
 
 export type ApiResponse = ApiResponseMeta & {
   data: User[];
+};
+
+export type TableRowProps = {
+  user: User;
+};
+
+export type TableProps = DetailedHTMLProps<
+  HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> & {
+  users: User[];
+  totalPages: number;
+};
+
+export type PaginationButtonProps = DetailedHTMLProps<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> & {
+  setCurrentPage: TableProps['setCurrentPage'];
 };

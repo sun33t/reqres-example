@@ -1,5 +1,4 @@
-import { User } from '@types';
-import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import { TableProps, TableRowProps } from '@types';
 
 // The jsx and tailwind styles for this component were sourced from https://tailwindui.com/components/application-ui/lists/tables and were not my own work. I used this resource to bootstrap the these table components for expediency
 
@@ -44,10 +43,6 @@ const TableHeader = () => (
   </thead>
 );
 
-type TableRowProps = {
-  user: User;
-};
-
 const TableRow = ({ user }: TableRowProps) => (
   <tr>
     <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6'>
@@ -81,16 +76,13 @@ const TableRow = ({ user }: TableRowProps) => (
   </tr>
 );
 
-type TableProps = DetailedHTMLProps<
-  HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> & {
-  users: User[];
-};
-
-export const Table = ({ users }: TableProps) => {
+export const Table = ({ users, totalPages, ...restOfProps }: TableProps) => {
   return (
-    <div className='mx-auto max-w-3xl px-4 sm:px-6 lg:px-8' id='User Table'>
+    <div
+      // className='max-w-3xl px-4 sm:px-6 lg:px-8'
+      id='User Table'
+      {...restOfProps}
+    >
       <TableTitle />
       <div className='mt-8 flex flex-col'>
         <div className='-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8'>
