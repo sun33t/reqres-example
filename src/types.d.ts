@@ -1,4 +1,10 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, HTMLAttributes } from 'react';
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  Dispatch,
+  HTMLAttributes,
+  SetStateAction,
+} from 'react';
 
 export type ApiResponseMeta = {
   page: number;
@@ -33,6 +39,7 @@ export type TableProps = DetailedHTMLProps<
 > & {
   users: User[];
   totalPages: number;
+  clearSearchQueries: () => void;
 };
 
 export type PaginationButtonProps = DetailedHTMLProps<
@@ -40,4 +47,14 @@ export type PaginationButtonProps = DetailedHTMLProps<
   HTMLButtonElement
 > & {
   setCurrentPage: TableProps['setCurrentPage'];
+};
+
+export type ModalProps = {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
+};
+
+export type TableTitleProps = {
+  users: User[];
+  clearSearchQueries: () => void;
 };
