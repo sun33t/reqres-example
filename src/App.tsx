@@ -16,6 +16,9 @@ function App() {
   const [emailQueryResult, setEmailQueryResult] = useState<User[]>([]);
   const [lastNameQuery, setLastNameQuery] = useState('');
   const [lastNameQueryResult, setLastNameQueryResult] = useState<User[]>([]);
+  const [currentlySelectedUser, setCurrentlySelectedUser] = useState<User>(
+    {} as User
+  );
 
   const totalPagesAsArray = Array(totalPages).fill('button');
 
@@ -68,6 +71,17 @@ function App() {
     setLastNameQueryResult([]);
   };
 
+  const handleModal = () => {
+    const setSelectedUser = (user: User) => {
+      setCurrentlySelectedUser(user);
+    };
+    const closeModal = () => setIsModalOpen(false);
+    const openModal = () => setIsModalOpen(true);
+    const clearSelectedUser = () => setCurrentlySelectedUser({} as User);
+
+    return { setSelectedUser, closeModal, openModal, clearSelectedUser };
+  };
+
   useEffect(() => {
     fetchUsers();
   }, [currentPage]);
@@ -79,6 +93,37 @@ function App() {
         </h1>
       </header>
       <main className='pt-20'>
+        <Section>
+          {isLoading && (
+            <h2 data-testid='loading' className='text-xl'>
+              Loading...
+            </h2>
+          )}
+          {!isLoading && (
+            <div>
+              <Table
+                handleModal={handleModal}
+                users={users}
+                totalPages={totalPages}
+                clearSearchQueries={clearSearchQueries}
+              />
+              <div
+                id='pagination'
+                className='flex items-center justify-center gap-4 py-4'
+              >
+                {totalPagesAsArray?.map((element, index) => (
+                  <button
+                    key={`page-${index + 1}`}
+                    className='rounded-md border-2 border-indigo-500 px-2 text-indigo-500 hover:bg-indigo-500 hover:text-white'
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </Section>
         <Section className='py-8'>
           <div>
             <div className='flex gap-8'>
@@ -135,39 +180,10 @@ function App() {
             </div>
           </div>
         </Section>
-        <Section>
-          {isLoading && (
-            <h2 data-testid='loading' className='text-xl'>
-              Loading...
-            </h2>
-          )}
-          {!isLoading && (
-            <div>
-              <Table
-                users={users}
-                totalPages={totalPages}
-                clearSearchQueries={clearSearchQueries}
-              />
-              <div
-                id='pagination'
-                className='flex items-center justify-center gap-4 py-4'
-              >
-                {totalPagesAsArray?.map((element, index) => (
-                  <button
-                    key={`page-${index + 1}`}
-                    className='rounded-md border-2 border-indigo-500 px-2 text-indigo-500 hover:bg-indigo-500 hover:text-white'
-                    onClick={() => setCurrentPage(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </Section>
         <Section className='w-full'>
           {emailQueryResult.length > 0 && (
             <Table
+              handleModal={handleModal}
               users={emailQueryResult}
               totalPages={0}
               clearSearchQueries={clearSearchQueries}
@@ -175,13 +191,20 @@ function App() {
           )}
           {lastNameQueryResult.length > 0 && (
             <Table
+              handleModal={handleModal}
               users={lastNameQueryResult}
               totalPages={0}
               clearSearchQueries={clearSearchQueries}
             />
           )}
         </Section>
-        <Modal open={isModalOpen} setOpen={setIsModalOpen} />
+        {Object.keys(currentlySelectedUser).length && (
+          <Modal
+            open={isModalOpen}
+            setOpen={setIsModalOpen}
+            user={currentlySelectedUser}
+          />
+        )}
       </main>
     </Layout>
   );

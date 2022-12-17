@@ -3,6 +3,8 @@ import {
   DetailedHTMLProps,
   Dispatch,
   HTMLAttributes,
+  InputHTMLAttributes,
+  LabelHTMLAttributes,
   SetStateAction,
 } from 'react';
 
@@ -29,10 +31,6 @@ export type ApiResponse = ApiResponseMeta & {
   data: User[];
 };
 
-export type TableRowProps = {
-  user: User;
-};
-
 export type TableProps = DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
@@ -40,6 +38,16 @@ export type TableProps = DetailedHTMLProps<
   users: User[];
   totalPages: number;
   clearSearchQueries: () => void;
+  handleModal: () => {
+    setSelectedUser: (user: User) => void;
+    closeModal: () => void;
+    openModal: () => void;
+    clearSelectedUser: () => void;
+  };
+};
+export type TableRowProps = {
+  user: User;
+  handleModal: TableProps['handleModal'];
 };
 
 export type PaginationButtonProps = DetailedHTMLProps<
@@ -52,9 +60,26 @@ export type PaginationButtonProps = DetailedHTMLProps<
 export type ModalProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
+  user: User;
 };
 
 export type TableTitleProps = {
   users: User[];
   clearSearchQueries: () => void;
 };
+
+export type InputProps = DetailedHTMLProps<
+  InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>;
+
+export type LabelProps = DetailedHTMLProps<
+  LabelHTMLAttributes<HTMLLabelElement>,
+  HTMLLabelElement
+>;
+
+export type ButtonProps<T> = DetailedHTMLProps<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> &
+  T;

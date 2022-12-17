@@ -1,8 +1,22 @@
+import { Button } from '@components/elements/Button';
+import { Input } from '@components/elements/Input';
+import { Label } from '@components/elements/Label';
 import { Dialog, Transition } from '@headlessui/react';
 import { ModalProps } from '@types';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
-export const Modal = ({ setOpen, open }: ModalProps) => {
+export const Modal = ({ setOpen, open, user }: ModalProps) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
+
+  useEffect(() => {
+    setFirstName(user?.first_name);
+    setLastName(user?.last_name);
+    setEmail(user?.email);
+    setAvatar(user?.avatar);
+  }, [user]);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={() => setOpen(false)}>
@@ -31,29 +45,70 @@ export const Modal = ({ setOpen, open }: ModalProps) => {
             >
               <Dialog.Panel className='relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6'>
                 <div>
-                  <div className='mt-3 text-center sm:mt-5'>
+                  <div className='mt-3 sm:mt-5'>
                     <Dialog.Title
                       as='h3'
-                      className='text-lg font-medium leading-6 text-gray-900'
+                      className='text-center text-lg font-medium leading-6 text-gray-900'
                     >
                       Edit User
                     </Dialog.Title>
                     <div className='mt-2'>
-                      <p className='text-sm text-gray-500'>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Consequatur amet labore.
-                      </p>
+                      <form className='w-full'>
+                        <fieldset>
+                          <div className='my-4 flex flex-col items-center justify-center'>
+                            <div className='h-10 w-10 flex-shrink-0'>
+                              <img
+                                className='h-10 w-10 rounded-full'
+                                src={avatar}
+                                alt={`avatar of ${user?.first_name} ${user?.last_name}`}
+                              />
+                            </div>
+                            <div className='mt-4'>
+                              <Button intent={'secondary'}>Change</Button>
+                            </div>
+                          </div>
+                          <div className='mt-4'>
+                            <Label htmlFor='first_name'>First Name</Label>
+                            <Input
+                              className='mt-2'
+                              type='text'
+                              value={firstName}
+                              onChange={(e) => setFirstName(e?.target?.value)}
+                              id='first_name'
+                              name='first_name'
+                            />
+                          </div>
+                          <div className='mt-4'>
+                            <Label htmlFor='last_name'>Last Name</Label>
+                            <Input
+                              className='mt-2'
+                              type='text'
+                              value={lastName}
+                              onChange={(e) => setLastName(e?.target?.value)}
+                              id='last_name'
+                              name='last_name'
+                            />
+                          </div>
+                          <div className='mt-4'>
+                            <Label htmlFor='email'>Email Address</Label>
+                            <Input
+                              className='mt-2'
+                              type='email'
+                              value={email}
+                              onChange={(e) => setEmail(e?.target?.value)}
+                              id='email'
+                              name='email'
+                            />
+                          </div>
+                        </fieldset>
+                      </form>
                     </div>
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6'>
-                  <button
-                    type='button'
-                    className='inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm'
-                    onClick={() => setOpen(false)}
-                  >
-                    Go back to dashboard
-                  </button>
+                  <Button fullWidth={true} onClick={() => setOpen(false)}>
+                    Submit Changes
+                  </Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
