@@ -1,7 +1,8 @@
+import { ApiResponse } from '@types';
 import { rest } from 'msw';
 
 // Mock Data
-export const response = {
+export const response: ApiResponse = {
   page: 1,
   per_page: 6,
   total: 12,
