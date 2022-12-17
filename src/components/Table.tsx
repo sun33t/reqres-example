@@ -1,8 +1,29 @@
-import { TableProps, TableRowProps, TableTitleProps } from '@types';
+import { TableProps, TableRowProps } from '@types';
+import { Button } from './elements/Button';
+import { InputWithButtonAndLabel } from './elements/InputWithButtonAndLabel';
 
 // The jsx and tailwind styles for this component were sourced from https://tailwindui.com/components/application-ui/lists/tables and were not my own work. I used this resource to bootstrap the these table components for expediency
 
-const TableTitle = ({ users, clearSearchQueries }: TableTitleProps) => (
+const TableTitle = ({
+  users,
+  clearSearchQueries,
+  handleEmailSearch,
+  emailQuery,
+  setEmailQuery,
+  handleLastNameSearch,
+  lastNameQuery,
+  setLastNameQuery,
+}: Pick<
+  TableProps,
+  | 'users'
+  | 'clearSearchQueries'
+  | 'handleEmailSearch'
+  | 'emailQuery'
+  | 'setEmailQuery'
+  | 'handleLastNameSearch'
+  | 'lastNameQuery'
+  | 'setLastNameQuery'
+>) => (
   <div className='sm:flex sm:items-center'>
     <div className='sm:flex-auto'>
       <h1 className='text-xl font-semibold text-gray-900'>
@@ -14,17 +35,48 @@ const TableTitle = ({ users, clearSearchQueries }: TableTitleProps) => (
           : null}
       </p>
     </div>
-    {users?.length === 1 && (
-      <div className='mt-4 sm:mt-0 sm:ml-16 sm:flex-none'>
-        <button
-          type='button'
-          onClick={clearSearchQueries}
-          className='inline-flex items-center justify-center rounded-md border border-transparent bg-orange-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 sm:w-auto'
-        >
-          clear
-        </button>
+    <div>
+      <div className='flex gap-8'>
+        <form onSubmit={handleEmailSearch}>
+          <InputWithButtonAndLabel
+            labelProps={{ htmlFor: 'email', children: 'Search By Email' }}
+            inputProps={{
+              value: emailQuery,
+              type: 'email',
+              name: 'email',
+              id: 'email',
+              onChange: (e) => setEmailQuery(e?.target?.value),
+            }}
+            buttonProps={{ type: 'submit', children: 'Search' }}
+          />
+        </form>
+        <form onSubmit={handleLastNameSearch}>
+          <InputWithButtonAndLabel
+            labelProps={{
+              htmlFor: 'last_name',
+              children: 'Search By Last Name',
+            }}
+            inputProps={{
+              value: lastNameQuery,
+              type: 'last_name',
+              name: 'last_name',
+              id: 'last_name',
+              onChange: (e) => setLastNameQuery(e?.target?.value),
+            }}
+            buttonProps={{ type: 'submit', children: 'Search' }}
+          />
+        </form>
+        {users?.length === 1 && (
+          <Button
+            intent='secondary'
+            onClick={clearSearchQueries}
+            className='self-end'
+          >
+            Clear
+          </Button>
+        )}
       </div>
-    )}
+    </div>
   </div>
 );
 
@@ -96,19 +148,29 @@ const TableRow = ({ user, handleModal }: TableRowProps) => {
 
 export const Table = ({
   users,
-  totalPages,
   clearSearchQueries,
   handleModal,
+  handleEmailSearch,
+  emailQuery,
+  setEmailQuery,
+  handleLastNameSearch,
+  lastNameQuery,
+  setLastNameQuery,
   ...restOfProps
 }: TableProps) => {
   return (
     users && (
-      <div
-        // className='max-w-3xl px-4 sm:px-6 lg:px-8'
-        id='User Table'
-        {...restOfProps}
-      >
-        <TableTitle users={users} clearSearchQueries={clearSearchQueries} />
+      <div id='User Table' {...restOfProps}>
+        <TableTitle
+          users={users}
+          clearSearchQueries={clearSearchQueries}
+          emailQuery={emailQuery}
+          handleEmailSearch={handleEmailSearch}
+          handleLastNameSearch={handleLastNameSearch}
+          lastNameQuery={lastNameQuery}
+          setEmailQuery={setEmailQuery}
+          setLastNameQuery={setLastNameQuery}
+        />
         <div className='mt-8 flex flex-col'>
           <div className='-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8'>
             <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>

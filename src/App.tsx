@@ -1,3 +1,4 @@
+import { Button } from '@components/elements/Button';
 import { Layout } from '@components/Layout';
 import { Modal } from '@components/Modal';
 import { Section } from '@components/Section';
@@ -8,6 +9,7 @@ import { FormEventHandler, useEffect, useState } from 'react';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSearch, setIsSearch] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -53,6 +55,7 @@ function App() {
     setEmailQueryResult(emailSearchResult);
     setEmailQuery('');
     setLastNameQueryResult([]);
+    setIsSearch(true);
   };
   const handleLastNameSearch: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -62,6 +65,7 @@ function App() {
     setLastNameQueryResult(lastNameSearchResult);
     setLastNameQuery('');
     setEmailQueryResult([]);
+    setIsSearch(true);
   };
 
   const clearSearchQueries = () => {
@@ -69,6 +73,7 @@ function App() {
     setEmailQueryResult([]);
     setLastNameQuery('');
     setLastNameQueryResult([]);
+    setIsSearch(false);
   };
 
   const handleModal = () => {
@@ -103,102 +108,42 @@ function App() {
             <div>
               <Table
                 handleModal={handleModal}
-                users={users}
-                totalPages={totalPages}
+                users={
+                  Object.keys(emailQueryResult).length > 0
+                    ? emailQueryResult
+                    : Object.keys(lastNameQueryResult).length > 0
+                    ? lastNameQueryResult
+                    : users
+                }
                 clearSearchQueries={clearSearchQueries}
+                handleEmailSearch={handleEmailSearch}
+                emailQuery={emailQuery}
+                setEmailQuery={setEmailQuery}
+                handleLastNameSearch={handleLastNameSearch}
+                lastNameQuery={lastNameQuery}
+                setLastNameQuery={setLastNameQuery}
               />
-              <div
-                id='pagination'
-                className='flex items-center justify-center gap-4 py-4'
-              >
-                {totalPagesAsArray?.map((element, index) => (
-                  <button
-                    key={`page-${index + 1}`}
-                    className='rounded-md border-2 border-indigo-500 px-2 text-indigo-500 hover:bg-indigo-500 hover:text-white'
-                    onClick={() => setCurrentPage(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </div>
+              {!isSearch && (
+                <div
+                  id='pagination'
+                  className='flex items-center justify-center gap-4 py-4'
+                >
+                  {totalPagesAsArray?.map((element, index) => (
+                    <Button
+                      intent={'secondary'}
+                      key={`page-${index + 1}`}
+                      onClick={() => setCurrentPage(index + 1)}
+                    >
+                      {index + 1}
+                    </Button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </Section>
-        <Section className='py-8'>
-          <div>
-            <div className='flex gap-8'>
-              <form onSubmit={handleEmailSearch}>
-                <label
-                  htmlFor='email'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Search By Email
-                </label>
-                <div className='mt-1 flex'>
-                  <input
-                    value={emailQuery}
-                    onChange={(e) => setEmailQuery(e.target.value)}
-                    type='email'
-                    name='email'
-                    id='email'
-                    className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    placeholder='you@example.com'
-                  />
-                  <button
-                    className='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto'
-                    type={'submit'}
-                  >
-                    search
-                  </button>
-                </div>
-              </form>
-              <form onSubmit={handleLastNameSearch}>
-                <label
-                  htmlFor='name'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Search By Last Name
-                </label>
-                <div className='mt-1 flex'>
-                  <input
-                    value={lastNameQuery}
-                    onChange={(e) => setLastNameQuery(e?.target?.value)}
-                    type='text'
-                    name='name'
-                    id='name'
-                    className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    placeholder='Joe Bloggs'
-                  />
-                  <button
-                    className='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto'
-                    type={'submit'}
-                  >
-                    search
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </Section>
-        <Section className='w-full'>
-          {emailQueryResult.length > 0 && (
-            <Table
-              handleModal={handleModal}
-              users={emailQueryResult}
-              totalPages={0}
-              clearSearchQueries={clearSearchQueries}
-            />
-          )}
-          {lastNameQueryResult.length > 0 && (
-            <Table
-              handleModal={handleModal}
-              users={lastNameQueryResult}
-              totalPages={0}
-              clearSearchQueries={clearSearchQueries}
-            />
-          )}
-        </Section>
-        {Object.keys(currentlySelectedUser).length && (
+
+        {Object.keys(currentlySelectedUser).length > 0 && (
           <Modal
             open={isModalOpen}
             setOpen={setIsModalOpen}

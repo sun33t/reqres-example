@@ -2,6 +2,7 @@ import {
   ButtonHTMLAttributes,
   DetailedHTMLProps,
   Dispatch,
+  FormEventHandler,
   HTMLAttributes,
   InputHTMLAttributes,
   LabelHTMLAttributes,
@@ -36,7 +37,12 @@ export type TableProps = DetailedHTMLProps<
   HTMLDivElement
 > & {
   users: User[];
-  totalPages: number;
+  handleEmailSearch: FormEventHandler<HTMLFormElement>;
+  emailQuery: string;
+  setEmailQuery: Dispatch<SetStateAction<string>>;
+  handleLastNameSearch: FormEventHandler<HTMLFormElement>;
+  lastNameQuery: string;
+  setLastNameQuery: Dispatch<SetStateAction<string>>;
   clearSearchQueries: () => void;
   handleModal: () => {
     setSelectedUser: (user: User) => void;
@@ -61,11 +67,6 @@ export type ModalProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
   user: User;
-};
-
-export type TableTitleProps = {
-  users: User[];
-  clearSearchQueries: () => void;
 };
 
 export type InputProps = DetailedHTMLProps<
