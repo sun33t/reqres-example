@@ -1,5 +1,6 @@
 import { Layout } from '@components/Layout';
 import { Section } from '@components/Section';
+import { Table } from '@components/Table';
 import { ApiResponse, User } from '@types';
 import { fetch } from 'cross-fetch';
 import { useEffect, useState } from 'react';
@@ -29,22 +30,16 @@ function App() {
           API Fetch Example
         </h1>
       </header>
-      <main>
+      <main className='pt-20'>
         <Section>
           {isLoading && (
             <h2 data-testid='loading' className='text-xl'>
               Loading...
             </h2>
           )}
-          {!isLoading &&
-            users?.map((user) => (
-              <div key={user?.id}>
-                <h2>{`${user?.first_name} ${user?.last_name}`}</h2>
-              </div>
-            ))}
+          {!isLoading && <Table users={users} />}
         </Section>
       </main>
-      <footer>This is the footer</footer>
     </Layout>
   );
 }

@@ -22,9 +22,7 @@ it('should load user data upon page load', async () => {
 
   response?.data?.forEach((user) => {
     expect(
-      screen.getByRole('heading', {
-        name: `${user?.first_name} ${user?.last_name}`,
-      })
+      screen.getByTestId(`${user?.first_name} ${user?.last_name}`)
     ).toBeDefined();
   });
 });

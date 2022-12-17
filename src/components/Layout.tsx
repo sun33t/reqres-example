@@ -14,7 +14,7 @@ export const Layout = ({
   return (
     <div
       className={cx([
-        'grid min-h-screen grid-rows-[auto_1fr_auto] bg-neutral-50',
+        'min-h-screen grid-rows-[auto_1fr_auto] bg-neutral-50',
         className,
       ])}
       {...restOfProps}
