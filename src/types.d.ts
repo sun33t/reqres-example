@@ -98,3 +98,5 @@ export type ButtonProps<T> = DetailedHTMLProps<
   HTMLButtonElement
 > &
   T;
+
+export type EditUserFormProps = Pick<ModalProps, 'user'>;
