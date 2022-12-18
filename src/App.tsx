@@ -1,7 +1,7 @@
 import { Button } from '@components/elements/Button';
+import { Section } from '@components/elements/Section';
 import { Layout } from '@components/Layout';
 import { Modal } from '@components/Modal';
-import { Section } from '@components/Section';
 import { Table } from '@components/Table';
 import useApi from '@hooks/useApi';
 import { HandleSearchQuery, User } from '@types';
