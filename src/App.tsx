@@ -1,8 +1,8 @@
 import { Button } from '@components/elements/Button';
 import { Section } from '@components/elements/Section';
 import { Layout } from '@components/global/Layout';
-import { Modal } from '@components/Modal';
-import { Table } from '@components/Table';
+import { Modal } from '@components/sections/Modal';
+import { Table } from '@components/sections/Table';
 import useApi from '@hooks/useApi';
 import { HandleSearchQuery, User } from '@types';
 import { useState } from 'react';
