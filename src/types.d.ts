@@ -44,6 +44,7 @@ export type TableProps = DetailedHTMLProps<
   lastNameQuery: string;
   setLastNameQuery: Dispatch<SetStateAction<string>>;
   clearSearchQueries: () => void;
+  isSearch: boolean;
   handleModal: () => {
     setSelectedUser: (user: User) => void;
     closeModal: () => void;
@@ -51,6 +52,19 @@ export type TableProps = DetailedHTMLProps<
     clearSelectedUser: () => void;
   };
 };
+
+export type TableTitleProps = Pick<
+  TableProps,
+  | 'users'
+  | 'clearSearchQueries'
+  | 'handleEmailSearch'
+  | 'emailQuery'
+  | 'setEmailQuery'
+  | 'handleLastNameSearch'
+  | 'lastNameQuery'
+  | 'setLastNameQuery'
+  | 'isSearch'
+>;
 export type TableRowProps = {
   user: User;
   handleModal: TableProps['handleModal'];

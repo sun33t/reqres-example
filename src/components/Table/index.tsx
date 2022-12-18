@@ -16,12 +16,14 @@ export const Table = ({
   handleLastNameSearch,
   lastNameQuery,
   setLastNameQuery,
+  isSearch,
   ...restOfProps
 }: TableProps) => {
   return (
     users && (
       <div id='User Table' {...restOfProps}>
         <TableTitle
+          isSearch={isSearch}
           users={users}
           clearSearchQueries={clearSearchQueries}
           emailQuery={emailQuery}

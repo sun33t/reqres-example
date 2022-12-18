@@ -1,6 +1,6 @@
 import { Button } from '@components/elements/Button';
 import { InputWithButtonAndLabel } from '@components/elements/InputWithButtonAndLabel';
-import { TableProps } from '@types';
+import { TableTitleProps } from '@types';
 
 export const TableTitle = ({
   users,
@@ -11,27 +11,18 @@ export const TableTitle = ({
   handleLastNameSearch,
   lastNameQuery,
   setLastNameQuery,
-}: Pick<
-  TableProps,
-  | 'users'
-  | 'clearSearchQueries'
-  | 'handleEmailSearch'
-  | 'emailQuery'
-  | 'setEmailQuery'
-  | 'handleLastNameSearch'
-  | 'lastNameQuery'
-  | 'setLastNameQuery'
->) => (
+  isSearch,
+}: TableTitleProps) => (
   <div className='sm:flex sm:items-center'>
     <div className='sm:flex-auto'>
       <h1 className='text-xl font-semibold text-gray-900'>
-        {users.length > 1 ? 'Users' : 'Search Results'}
+        {isSearch ? 'Search Results' : 'Users'}
       </h1>
-      <p className='mt-2 text-sm text-gray-700'>
-        {users.length > 1
-          ? 'A list of all the users returned from reqres.in'
-          : null}
-      </p>
+      {!isSearch && (
+        <p className='mt-2 text-sm text-gray-700'>
+          A list of all the users returned from reqres.in
+        </p>
+      )}
     </div>
     <div>
       <div className='flex gap-8'>
@@ -64,7 +55,7 @@ export const TableTitle = ({
             buttonProps={{ type: 'submit', children: 'Search' }}
           />
         </form>
-        {users?.length === 1 && (
+        {isSearch && (
           <Button
             intent='secondary'
             onClick={clearSearchQueries}

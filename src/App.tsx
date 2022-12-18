@@ -7,6 +7,12 @@ import useApi from '@hooks/useApi';
 import { User } from '@types';
 import { FormEventHandler, useState } from 'react';
 
+// need to simplify the search queries. We don't need seperate state to hold the input from each field. Replace emailQuery and lastNameQuery with one searchQuery state. It can be an object that holds both the query string and the type of search e.g. { query: string; type: 'email' | 'last_name }
+
+// then we would only need one handleSearch click handler. Additionaly, rather than doing the ternary in the users prop for the table to determine which object to pass through to the table, we should check for whether isSearch is true, and then either pass in the whole users array (if false) or the results of the search (if true)
+
+// Then within the table component we can determine whether or not to show the table (if users.length > 0) or show a <NoSearchResults /> component if the users array is empty (and the isSearch boolean is true)
+
 function App() {
   const [isSearch, setIsSearch] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,21 +34,19 @@ function App() {
 
   const handleEmailSearch: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const emailSearchResult = users.filter(
-      (user) => user?.email.toLowerCase() === emailQuery.toLowerCase()
+    const emailSearchResult = users.filter((user) =>
+      user?.email.toLowerCase()?.includes(emailQuery.toLowerCase())
     );
     setEmailQueryResult(emailSearchResult);
-    setEmailQuery('');
     setLastNameQueryResult([]);
     setIsSearch(true);
   };
   const handleLastNameSearch: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const lastNameSearchResult = users.filter(
-      (user) => user?.last_name.toLowerCase() === lastNameQuery.toLowerCase()
+    const lastNameSearchResult = users.filter((user) =>
+      user?.last_name.toLowerCase()?.includes(lastNameQuery.toLowerCase())
     );
     setLastNameQueryResult(lastNameSearchResult);
-    setLastNameQuery('');
     setEmailQueryResult([]);
     setIsSearch(true);
   };
@@ -90,6 +94,7 @@ function App() {
                     ? lastNameQueryResult
                     : users
                 }
+                isSearch={isSearch}
                 clearSearchQueries={clearSearchQueries}
                 handleEmailSearch={handleEmailSearch}
                 emailQuery={emailQuery}
