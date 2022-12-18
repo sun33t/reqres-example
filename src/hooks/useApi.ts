@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
  * A hook for making api calls to the ReqRes.in server. Currently this hook is designed to retrieve user data from a get request but it can be refactored in the future to make calls to the endpoints and for other CRUD operations.
  */
 export default function useApi(endpoint: string, query: string) {
-  const baseURL = 'https://reqres.in/api';
+  const baseURL = import.meta.env.VITE_REQRES_API_BASE_URL;
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
