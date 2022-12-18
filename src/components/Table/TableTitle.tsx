@@ -3,7 +3,6 @@ import { InputWithButtonAndLabel } from '@components/elements/InputWithButtonAnd
 import { TableTitleProps } from '@types';
 
 export const TableTitle = ({
-  users,
   clearSearchQueries,
   handleEmailSearch,
   emailQuery,

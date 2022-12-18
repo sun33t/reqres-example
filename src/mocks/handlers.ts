@@ -59,7 +59,7 @@ export const response: ApiResponse = {
 
 // Define handlers that catch the corresponding requests and returns the mock data.
 export const handlers = [
-  rest.get('https://reqres.in/api/users', (req, res, ctx) => {
+  rest.get('https://reqres.in/api/users', (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(response));
   }),
 ];

@@ -46,6 +46,7 @@ export type TableProps = DetailedHTMLProps<
   clearSearchQueries: () => void;
   isSearch: boolean;
   handleModal: () => {
+    // eslint-disable-next-line no-unused-vars
     setSelectedUser: (user: User) => void;
     closeModal: () => void;
     openModal: () => void;
@@ -55,7 +56,6 @@ export type TableProps = DetailedHTMLProps<
 
 export type TableTitleProps = Pick<
   TableProps,
-  | 'users'
   | 'clearSearchQueries'
   | 'handleEmailSearch'
   | 'emailQuery'

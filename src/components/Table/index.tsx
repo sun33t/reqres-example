@@ -24,7 +24,6 @@ export const Table = ({
       <div id='User Table' {...restOfProps}>
         <TableTitle
           isSearch={isSearch}
-          users={users}
           clearSearchQueries={clearSearchQueries}
           emailQuery={emailQuery}
           handleEmailSearch={handleEmailSearch}

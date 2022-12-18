@@ -108,7 +108,7 @@ function App() {
                   id='pagination'
                   className='flex items-center justify-center gap-4 py-4'
                 >
-                  {totalPagesAsArray?.map((element, index) => (
+                  {totalPagesAsArray?.map((_element, index) => (
                     <Button
                       intent={'secondary'}
                       key={`page-${index + 1}`}

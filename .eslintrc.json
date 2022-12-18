@@ -15,7 +15,17 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "react/react-in-jsx-scope": [0]
+    "react/react-in-jsx-scope": [0],
+    "no-dupe-keys": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "all",
+        "ignoreRestSiblings": false,
+        "argsIgnorePattern": "^_"
+      }
+    ]
   },
   "settings": {
     "react": {
