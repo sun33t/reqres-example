@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   ButtonHTMLAttributes,
   DetailedHTMLProps,
@@ -31,8 +32,10 @@ export type ApiResponse = ApiResponseMeta & {
   data: User[];
 };
 
+export type UserSearchType = 'email' | 'last_name';
+
 export type HandleSearchQuery = {
-  type: 'email' | 'last_name';
+  type: UserSearchType;
   query: string;
 };
 
@@ -41,11 +44,11 @@ export type TableProps = DetailedHTMLProps<
   HTMLDivElement
 > & {
   users: User[];
-  handleSearchQuery: (_T: HandleSearchQuery) => void;
+  handleSearchQuery: (searchValues: HandleSearchQuery) => void;
   clearSearchQueries: () => void;
   isSearch: boolean;
   handleModal: () => {
-    setSelectedUser: (_user: User) => void;
+    setSelectedUser: (user: User) => void;
     closeModal: () => void;
     openModal: () => void;
     clearSelectedUser: () => void;

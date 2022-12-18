@@ -1,6 +1,7 @@
 import { Button } from '@components/elements/Button';
 import { InputWithButtonAndLabel } from '@components/elements/InputWithButtonAndLabel';
-import { TableTitleProps } from '@types';
+import { Label } from '@components/elements/Label';
+import { TableTitleProps, UserSearchType } from '@types';
 import { FormEventHandler, useState } from 'react';
 
 export const TableTitle = ({
@@ -8,27 +9,17 @@ export const TableTitle = ({
   handleSearchQuery,
   isSearch,
 }: TableTitleProps) => {
-  const [emailSearch, setEmailSearch] = useState('');
-  const [lastNameSearch, setLastNameSearch] = useState('');
+  const [searchType, setSearchType] = useState<UserSearchType>('email');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const target = e.target as HTMLFormElement;
-    if (target) {
-      if (target?.name === 'emailSearch') {
-        handleSearchQuery({ type: 'email', query: emailSearch });
-      }
-
-      if (target?.name === 'lastNameSearch') {
-        handleSearchQuery({ type: 'last_name', query: lastNameSearch });
-      }
-    }
+    handleSearchQuery({ query: searchQuery, type: searchType });
   };
 
   const handleClearSearch = () => {
     clearSearchQueries();
-    setEmailSearch('');
-    setLastNameSearch('');
+    setSearchQuery('');
   };
 
   return (
@@ -45,44 +36,47 @@ export const TableTitle = ({
       </div>
       <div>
         <div className='flex gap-8'>
-          <form name='emailSearch' onSubmit={handleSubmit}>
+          <form name='search' onSubmit={handleSubmit} className='flex gap-8'>
+            <div>
+              <Label htmlFor='location'>Search By</Label>
+              <select
+                id='location'
+                name='location'
+                className='mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
+                defaultValue={searchType}
+                onChange={(e) =>
+                  setSearchType(e.target.value as UserSearchType)
+                }
+              >
+                <option value='email'>Email</option>
+                <option value='last_name'>Last Name</option>
+              </select>
+            </div>
             <InputWithButtonAndLabel
-              labelProps={{ htmlFor: 'email', children: 'Search By Email' }}
-              inputProps={{
-                value: emailSearch,
-                type: 'email',
-                name: 'email',
-                id: 'email',
-                onChange: (e) => setEmailSearch(e?.target?.value),
-              }}
-              buttonProps={{ type: 'submit', children: 'Search' }}
-            />
-          </form>
-          <form name='lastNameSearch' onSubmit={handleSubmit}>
-            <InputWithButtonAndLabel
-              labelProps={{
-                htmlFor: 'last_name',
-                children: 'Search By Last Name',
-              }}
-              inputProps={{
-                value: lastNameSearch,
-                type: 'last_name',
-                name: 'last_name',
-                id: 'last_name',
-                onChange: (e) => setLastNameSearch(e?.target?.value),
-              }}
-              buttonProps={{ type: 'submit', children: 'Search' }}
-            />
-          </form>
-          {isSearch && (
-            <Button
-              intent='secondary'
-              onClick={handleClearSearch}
               className='self-end'
-            >
-              Clear
-            </Button>
-          )}
+              labelProps={{
+                htmlFor: 'email',
+                children: 'Submit User Search',
+                className: 'sr-only',
+              }}
+              inputProps={{
+                value: searchQuery,
+                type: searchType === 'email' ? 'email' : 'text',
+                name: 'search_input',
+                id: 'search_input',
+                onChange: (e) => setSearchQuery(e?.target?.value),
+              }}
+              buttonProps={{ type: 'submit', children: 'Search' }}
+            />
+          </form>
+
+          <Button
+            intent='secondary'
+            onClick={handleClearSearch}
+            className='self-end'
+          >
+            Clear
+          </Button>
         </div>
       </div>
     </div>
