@@ -3,16 +3,13 @@ import { Layout } from '@components/Layout';
 import { Modal } from '@components/Modal';
 import { Section } from '@components/Section';
 import { Table } from '@components/Table';
-import { ApiResponse, User } from '@types';
-import { fetch } from 'cross-fetch';
-import { FormEventHandler, useEffect, useState } from 'react';
+import useApi from '@hooks/useApi';
+import { User } from '@types';
+import { FormEventHandler, useState } from 'react';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [emailQuery, setEmailQuery] = useState('');
   const [emailQueryResult, setEmailQueryResult] = useState<User[]>([]);
@@ -22,30 +19,12 @@ function App() {
     {} as User
   );
 
-  const totalPagesAsArray = Array(totalPages).fill('button');
+  const { isLoading, users, totalPages } = useApi(
+    'users',
+    `page=${currentPage}`
+  );
 
-  const fetchUsers = async () => {
-    setIsLoading(true);
-    try {
-      await fetch(`https://reqres.in/api/users?page=${currentPage}`)
-        .then((res) => res.json())
-        .then((res: ApiResponse) => {
-          if (emailQuery.length > 0) {
-            setUsers(res?.data?.filter((user) => user?.email === emailQuery));
-          }
-          if (lastNameQuery.length > 0) {
-            setUsers(
-              res?.data?.filter((user) => user?.last_name === lastNameQuery)
-            );
-          }
-          setUsers(res?.data);
-          setTotalPages(res?.total_pages);
-        });
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const totalPagesAsArray = Array(totalPages).fill('button');
 
   const handleEmailSearch: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -86,10 +65,6 @@ function App() {
 
     return { setSelectedUser, closeModal, openModal, clearSelectedUser };
   };
-
-  useEffect(() => {
-    fetchUsers();
-  }, [currentPage]);
   return (
     <Layout id='App'>
       <header className='py-4'>

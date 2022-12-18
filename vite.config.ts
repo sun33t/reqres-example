@@ -17,6 +17,7 @@ export default defineConfig({
     alias: {
       '@components': path.resolve(__dirname, './src/components'),
       '@types': path.resolve(__dirname, './src/types.d.ts'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
     },
   },
 });
