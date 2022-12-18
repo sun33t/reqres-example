@@ -7,14 +7,6 @@ import useApi from '@hooks/useApi';
 import { User } from '@types';
 import { FormEventHandler, useState } from 'react';
 
-// need to simplify the search queries. We don't need seperate state to hold the input from each field. Replace emailQuery and lastNameQuery with one searchQuery state. It can be an object that holds both the query string and the type of search e.g. { query: string; type: 'email' | 'last_name }
-
-// then we would only need one handleSearch click handler. Additionaly, rather than doing the ternary in the users prop for the table to determine which object to pass through to the table, we should check for whether isSearch is true, and then either pass in the whole users array (if false) or the results of the search (if true)
-
-// Then within the table component we can determine whether or not to show the table (if users.length > 0) or show a <NoSearchResults /> component if the users array is empty (and the isSearch boolean is true)
-
-// Also replace both search fields with one drop down, and one search field. Use the value from the drop down to determine the type of search field (text or email) to render or we could use the 'Input with inline leading `dropdown` component from TailwindUI
-
 function App() {
   const [isSearch, setIsSearch] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
