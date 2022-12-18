@@ -48,7 +48,7 @@ export type TableProps = DetailedHTMLProps<
   clearSearchQueries: () => void;
   isSearch: boolean;
   handleModal: () => {
-    setSelectedUser: (user: User) => void;
+    setSelectedUser: Dispatch<SetStateAction<User>>;
     closeModal: () => void;
     openModal: () => void;
     clearSelectedUser: () => void;
@@ -75,6 +75,7 @@ export type ModalProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
   user: User;
+  handleModal: TableProps['handleModal'];
 };
 
 export type InputProps = DetailedHTMLProps<
@@ -93,4 +94,7 @@ export type ButtonProps<T> = DetailedHTMLProps<
 > &
   T;
 
-export type EditUserFormProps = Pick<ModalProps, 'user'>;
+export type EditUserFormProps = Pick<
+  ModalProps,
+  'user' | 'handleModal' | 'setOpen'
+>;

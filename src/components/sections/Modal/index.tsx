@@ -1,10 +1,9 @@
-import { Button } from '@components/elements/Button';
 import { Dialog, Transition } from '@headlessui/react';
 import { ModalProps } from '@types';
 import { Fragment } from 'react';
 import { EditUserForm } from './EditUserForm';
 
-export const Modal = ({ setOpen, open, user }: ModalProps) => {
+export const Modal = ({ setOpen, open, user, handleModal }: ModalProps) => {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={() => setOpen(false)}>
@@ -40,13 +39,12 @@ export const Modal = ({ setOpen, open, user }: ModalProps) => {
                     >
                       Edit User
                     </Dialog.Title>
-                    <EditUserForm user={user} />
+                    <EditUserForm
+                      user={user}
+                      handleModal={handleModal}
+                      setOpen={setOpen}
+                    />
                   </div>
-                </div>
-                <div className='mt-5 sm:mt-6'>
-                  <Button fullWidth={true} onClick={() => setOpen(false)}>
-                    Submit Changes
-                  </Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
