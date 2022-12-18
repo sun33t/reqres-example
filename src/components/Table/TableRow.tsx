@@ -18,10 +18,13 @@ export const TableRow = ({ user, handleModal }: TableRowProps) => {
               alt={`avatar of ${user?.first_name} ${user?.last_name}`}
             />
           </div>
-          <div className='ml-4'>
-            <div className='font-medium text-gray-900'>{`${user?.first_name} ${user?.last_name}`}</div>
-          </div>
         </div>
+      </td>
+      <td className='py-4font-medium whitespace-nowrap px-3 text-sm text-gray-900'>
+        {user?.first_name}
+      </td>
+      <td className='py-4font-medium whitespace-nowrap px-3 text-sm text-gray-900'>
+        {user?.last_name}
       </td>
       <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
         {user?.email}

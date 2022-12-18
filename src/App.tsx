@@ -13,6 +13,8 @@ import { FormEventHandler, useState } from 'react';
 
 // Then within the table component we can determine whether or not to show the table (if users.length > 0) or show a <NoSearchResults /> component if the users array is empty (and the isSearch boolean is true)
 
+// Also replace both search fields with one drop down, and one search field. Use the value from the drop down to determine the type of search field (text or email) to render or we could use the 'Input with inline leading `dropdown` component from TailwindUI
+
 function App() {
   const [isSearch, setIsSearch] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
