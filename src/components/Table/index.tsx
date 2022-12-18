@@ -10,13 +10,8 @@ export const Table = ({
   users,
   clearSearchQueries,
   handleModal,
-  handleEmailSearch,
-  emailQuery,
-  setEmailQuery,
-  handleLastNameSearch,
-  lastNameQuery,
-  setLastNameQuery,
   isSearch,
+  handleSearchQuery,
   ...restOfProps
 }: TableProps) => {
   return (
@@ -25,12 +20,7 @@ export const Table = ({
         <TableTitle
           isSearch={isSearch}
           clearSearchQueries={clearSearchQueries}
-          emailQuery={emailQuery}
-          handleEmailSearch={handleEmailSearch}
-          handleLastNameSearch={handleLastNameSearch}
-          lastNameQuery={lastNameQuery}
-          setEmailQuery={setEmailQuery}
-          setLastNameQuery={setLastNameQuery}
+          handleSearchQuery={handleSearchQuery}
         />
         <div className='mt-8 flex flex-col'>
           <div className='-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8'>

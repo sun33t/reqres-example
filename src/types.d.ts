@@ -2,7 +2,6 @@ import {
   ButtonHTMLAttributes,
   DetailedHTMLProps,
   Dispatch,
-  FormEventHandler,
   HTMLAttributes,
   InputHTMLAttributes,
   LabelHTMLAttributes,
@@ -32,22 +31,21 @@ export type ApiResponse = ApiResponseMeta & {
   data: User[];
 };
 
+export type HandleSearchQuery = {
+  type: 'email' | 'last_name';
+  query: string;
+};
+
 export type TableProps = DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > & {
   users: User[];
-  handleEmailSearch: FormEventHandler<HTMLFormElement>;
-  emailQuery: string;
-  setEmailQuery: Dispatch<SetStateAction<string>>;
-  handleLastNameSearch: FormEventHandler<HTMLFormElement>;
-  lastNameQuery: string;
-  setLastNameQuery: Dispatch<SetStateAction<string>>;
+  handleSearchQuery: (_T: HandleSearchQuery) => void;
   clearSearchQueries: () => void;
   isSearch: boolean;
   handleModal: () => {
-    // eslint-disable-next-line no-unused-vars
-    setSelectedUser: (user: User) => void;
+    setSelectedUser: (_user: User) => void;
     closeModal: () => void;
     openModal: () => void;
     clearSelectedUser: () => void;
@@ -56,14 +54,7 @@ export type TableProps = DetailedHTMLProps<
 
 export type TableTitleProps = Pick<
   TableProps,
-  | 'clearSearchQueries'
-  | 'handleEmailSearch'
-  | 'emailQuery'
-  | 'setEmailQuery'
-  | 'handleLastNameSearch'
-  | 'lastNameQuery'
-  | 'setLastNameQuery'
-  | 'isSearch'
+  'clearSearchQueries' | 'handleSearchQuery' | 'isSearch'
 >;
 export type TableRowProps = {
   user: User;

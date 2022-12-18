@@ -4,21 +4,17 @@ import { Modal } from '@components/Modal';
 import { Section } from '@components/Section';
 import { Table } from '@components/Table';
 import useApi from '@hooks/useApi';
-import { User } from '@types';
-import { FormEventHandler, useState } from 'react';
+import { HandleSearchQuery, User } from '@types';
+import { useState } from 'react';
 
 function App() {
   const [isSearch, setIsSearch] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [emailQuery, setEmailQuery] = useState('');
-  const [emailQueryResult, setEmailQueryResult] = useState<User[]>([]);
-  const [lastNameQuery, setLastNameQuery] = useState('');
-  const [lastNameQueryResult, setLastNameQueryResult] = useState<User[]>([]);
-  const [currentlySelectedUser, setCurrentlySelectedUser] = useState<User>(
-    {} as User
-  );
+  const [searchQueryResult, setSearchQueryResult] = useState<User[]>([]);
+  const [userBeingEdited, setUserBeingEdited] = useState<User>({} as User);
 
+  // fetch data from api upon page load
   const { isLoading, users, totalPages } = useApi(
     'users',
     `page=${currentPage}`
@@ -26,40 +22,34 @@ function App() {
 
   const totalPagesAsArray = Array(totalPages).fill('button');
 
-  const handleEmailSearch: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    const emailSearchResult = users.filter((user) =>
-      user?.email.toLowerCase()?.includes(emailQuery.toLowerCase())
-    );
-    setEmailQueryResult(emailSearchResult);
-    setLastNameQueryResult([]);
-    setIsSearch(true);
-  };
-  const handleLastNameSearch: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    const lastNameSearchResult = users.filter((user) =>
-      user?.last_name.toLowerCase()?.includes(lastNameQuery.toLowerCase())
-    );
-    setLastNameQueryResult(lastNameSearchResult);
-    setEmailQueryResult([]);
+  const handleSearchQuery = ({ type, query }: HandleSearchQuery) => {
+    if (type === 'email') {
+      const emailSearchResult = users?.filter((user) =>
+        user?.email.toLowerCase()?.includes(query.toLowerCase())
+      );
+      setSearchQueryResult(emailSearchResult);
+    }
+    if (type === 'last_name') {
+      const lastNameSearchResult = users?.filter((user) =>
+        user?.last_name?.toLowerCase()?.includes(query?.toLowerCase())
+      );
+      setSearchQueryResult(lastNameSearchResult);
+    }
     setIsSearch(true);
   };
 
   const clearSearchQueries = () => {
-    setEmailQuery('');
-    setEmailQueryResult([]);
-    setLastNameQuery('');
-    setLastNameQueryResult([]);
+    setSearchQueryResult([]);
     setIsSearch(false);
   };
 
   const handleModal = () => {
     const setSelectedUser = (user: User) => {
-      setCurrentlySelectedUser(user);
+      setUserBeingEdited(user);
     };
     const closeModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
-    const clearSelectedUser = () => setCurrentlySelectedUser({} as User);
+    const clearSelectedUser = () => setUserBeingEdited({} as User);
 
     return { setSelectedUser, closeModal, openModal, clearSelectedUser };
   };
@@ -81,21 +71,10 @@ function App() {
             <div>
               <Table
                 handleModal={handleModal}
-                users={
-                  Object.keys(emailQueryResult).length > 0
-                    ? emailQueryResult
-                    : Object.keys(lastNameQueryResult).length > 0
-                    ? lastNameQueryResult
-                    : users
-                }
+                users={isSearch ? searchQueryResult : users}
                 isSearch={isSearch}
                 clearSearchQueries={clearSearchQueries}
-                handleEmailSearch={handleEmailSearch}
-                emailQuery={emailQuery}
-                setEmailQuery={setEmailQuery}
-                handleLastNameSearch={handleLastNameSearch}
-                lastNameQuery={lastNameQuery}
-                setLastNameQuery={setLastNameQuery}
+                handleSearchQuery={handleSearchQuery}
               />
               {!isSearch && (
                 <div
@@ -117,11 +96,11 @@ function App() {
           )}
         </Section>
 
-        {Object.keys(currentlySelectedUser).length > 0 && (
+        {Object.keys(userBeingEdited).length > 0 && (
           <Modal
             open={isModalOpen}
             setOpen={setIsModalOpen}
-            user={currentlySelectedUser}
+            user={userBeingEdited}
           />
         )}
       </main>
