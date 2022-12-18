@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
-import App from './App';
-import { response } from './mocks/handlers';
-import { render, screen, waitFor } from './utils/test-utils';
+import App from '../App';
+import { response } from '../mocks/handlers';
+import { render, screen, waitFor } from '../utils/test-utils';
 
 it('should contain a heading with "API Fetch Example"', () => {
   render(<App />);
