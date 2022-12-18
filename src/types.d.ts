@@ -28,6 +28,8 @@ export type User = {
   avatar: string;
 };
 
+export type DataTestId = { 'data-testid'?: string };
+
 export type ApiResponse = ApiResponseMeta & {
   data: User[];
 };
@@ -53,48 +55,54 @@ export type TableProps = DetailedHTMLProps<
     openModal: () => void;
     clearSelectedUser: () => void;
   };
-};
+} & DataTestId;
 
 export type TableTitleProps = Pick<
   TableProps,
   'clearSearchQueries' | 'handleSearchQuery' | 'isSearch'
->;
+> &
+  DataTestId;
+
 export type TableRowProps = {
   user: User;
   handleModal: TableProps['handleModal'];
-};
+} & DataTestId;
 
 export type PaginationButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 > & {
   setCurrentPage: TableProps['setCurrentPage'];
-};
+} & DataTestId;
 
 export type ModalProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
   user: User;
   handleModal: TableProps['handleModal'];
-};
+} & DataTestId;
 
 export type InputProps = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
->;
+> &
+  DataTestId;
 
 export type LabelProps = DetailedHTMLProps<
   LabelHTMLAttributes<HTMLLabelElement>,
   HTMLLabelElement
->;
+> &
+  DataTestId;
 
 export type ButtonProps<T> = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 > &
-  T;
+  T &
+  DataTestId;
 
 export type EditUserFormProps = Pick<
   ModalProps,
   'user' | 'handleModal' | 'setOpen'
->;
+> &
+  DataTestId;
